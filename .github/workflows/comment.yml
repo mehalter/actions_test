@@ -14,7 +14,8 @@ jobs:
         with:
           script: |
             const pr = context.payload.pull_request
-            const user = pr.head.user
+            const user = pr.head.user.login
+            const repo = pr.head.repo.name
             const tab = "  "
             let settings = "updater = {\n" + tab + `channel = "nightly",\n`
             const branch = pr.head.ref
@@ -24,8 +25,8 @@ jobs:
             if (user != "AstroNvim") {
               settings += tab + `remote = "${user}"\n`
               settings += tab + `remotes = {\n`
-              settings += tab + tab + `["${user}"] = "${user}/${pr.head.name}",\n`
-              settings += tab + `}`
+              settings += tab + tab + `["${user}"] = "${user}/${repo}",\n`
+              settings += tab + `}\n`
             }
             settings += "}"
             github.rest.issues.createComment({
