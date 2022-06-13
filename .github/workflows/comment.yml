@@ -10,10 +10,13 @@ jobs:
     name: Comment updater settings
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v4
+      - uses: actions/github-script@v6
         with:
           script: |
+            console.log("Context")
             console.log(context)
+            console.log("\n\nIssue Object")
+            console.log(context.issue)
             const channel = "nightly"
             github.issues.createComment({
               issue_number: context.issue.number,
