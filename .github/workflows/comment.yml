@@ -1,0 +1,23 @@
+name: Updater Comment
+
+on:
+  pull_request_target:
+    types:
+      - opened
+
+jobs:
+  updater-comment:
+    name: Comment updater settings
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v4
+        with:
+          script: |
+            console.log(context)
+            const channel = "nightly"
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `TODO`,
+            })
