@@ -17,8 +17,8 @@ jobs:
             console.log(context)
             console.log("\n\nIssue Object")
             console.log(context.issue)
-            console.log("\n\nRepo Object")
-            console.log(context.repo)
+            console.log("\n\PR Object")
+            console.log(context.payload.pull_request)
             const channel = "nightly"
             github.rest.issues.createComment({
               issue_number: context.issue.number,
