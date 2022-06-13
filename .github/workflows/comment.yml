@@ -13,16 +13,24 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            console.log("Context")
-            console.log(context)
-            console.log("\n\nIssue Object")
-            console.log(context.issue)
-            console.log("\n\PR Object")
-            console.log(context.payload.pull_request)
-            const channel = "nightly"
+            const pr = context.payload.pull_request
+            const user = pr.head.user
+            const tab = "  "
+            let settings = "updater = {\n" + tab + `channel = "nightly",\n`
+            const branch = pr.head.ref
+            if (branch != "main") {
+              settings += tab + `branch = "${branch}",\n`
+            }
+            if (user != "AstroNvim") {
+              settings += tab + `remote = "${user}"\n`
+              settings += tab + `remotes = {\n`
+              settings += tab + tab + `["${user}"] = "${user}/${pr.head.name}",\n`
+              settings += tab + `}`
+            }
+            settings += "}"
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `TODO`,
+              body: "Use the following `updater` settings in your `user/init.lua` file for testing:\n```\n" + settings + "\n```",
             })
