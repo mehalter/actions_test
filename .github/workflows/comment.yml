@@ -14,4 +14,4 @@ jobs:
         with:
           script: |
             const pr = context.payload.pull_request
-            console.log(context)
+            console.log(context.payload.pull_request)
